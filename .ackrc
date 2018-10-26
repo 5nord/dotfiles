@@ -1,0 +1,29 @@
+# I like the grep colors
+--color-filename=CYAN
+--color-match=RED
+--color-lineno=MAGENTA
+
+# TTCN-3 stuff
+--type-add=ttcn3:ext:ttcn3,ttcn
+--type-add=t3tf:ext:t3tf
+--ignore-file=ext:t3xf,tasm
+
+# My developer stuff
+--type-set=devel=.c,.cc,.cpp,.cxx,.h,.hh,.hpp,.y,.yy,.yc,.l,.def
+
+# Waf stuff
+--type-add=waf:is:wscript
+
+# Ignore various build directories
+--ignore-directory=is:waf
+--ignore-directory=is:build
+--ignore-directory=is:rpmbuild
+--ignore-directory=is:go
+--ignore-directory=is:bin
+--ignore-directory=is:gnb
+--ignore-directory=is:sdk5g
+
+# default settings
+--no-ttcn3
+--no-t3tf
+--no-waf
