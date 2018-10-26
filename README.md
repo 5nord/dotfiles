@@ -65,6 +65,11 @@ This is a work in progress. Please be patient.
 * https://github.com/junegunn/fzf.vim
 
 ## Maybe Plugins
+* Comfortable-motion
+* tabular
+* vim-better-whitespace
+* vim-go
+* vim-sensible
 * https://github.com/wincent/terminus
 * https://github.com/honza/vim-snippets
 * https://github.com/Shougo/deoplete.nvim
