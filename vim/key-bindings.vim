@@ -26,10 +26,10 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " Move a line of text using ALT+[jk] or Command+[jk] on mac
-nmap <M-j> mz:m+<cr>`z
-nmap <M-k> mz:m-2<cr>`z
-vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
+nnoremap <M-j> mz:m+<cr>`z
+nnoremap <M-k> mz:m-2<cr>`z
+vnoremap <M-j> :m'>+<cr>`<my`>mzgv`yo`z
+vnoremap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z
 
 " Spell checking
 "
@@ -60,6 +60,7 @@ nnoremap ; :
 nnoremap \| @q
 vnoremap \| :norm! @q<CR>
 
+map <leader>nn :setlocal number!<cr>:setlocal relativenumber!<cr>
 "vnoremap $1 <esc>`>a)<esc>`<i(<esc>
 "vnoremap $2 <esc>`>a]<esc>`<i[<esc>
 "vnoremap $3 <esc>`>a}<esc>`<i{<esc>
