@@ -38,6 +38,11 @@ This is a work in progress. Please be patient.
         Ctrl+N      Next quickfix
         Ctrl+M      Prev quickfix
 
+**vim-surround**
+
+        cs"'        Replace quotes with single quotes
+
+
 # TODO
 
 ## Features Hotkeys
