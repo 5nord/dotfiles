@@ -38,6 +38,8 @@ This is a work in progress. Please be patient.
         Ctrl+N      Next quickfix
         Ctrl+M      Prev quickfix
 
+        gx          Open url under cursor
+
 **vim-surround -- quoting made simple**
 
         cs"'        Replace quotes with single quotes
@@ -47,27 +49,31 @@ This is a work in progress. Please be patient.
 
         ,z          Toggle ZEN mode
 
+**git gutter**
+        ]c <Plug>GitGutterNextHunk
+        [c <Plug>GitGutterPrevHunk
+        ,hs <Plug>GitGutterStageHunk
+        ,hu <Plug>GitGutterUndoHunk
+
 # TODO
 
 ## Features Hotkeys
 
+* Copy&paste between vim,tmux and system
+* git-hotkeys for blame, remotes, diffs, ...
 * Trailing space character should be colored
 * Hotkey for moving lines and blocks not working
 
 ## Plugins
 
+* https://github.com/terryma/vim-multiple-cursors
 * https://github.com/Yggdroot/indentLine: show columns
 * https://github.com/tomtom/tcomment_vim: toggle comments
-* https://github.com/junegunn/goyo.vim: zenmode
 * https://github.com/suan/vim-instant-markdown
 * https://github.com/Raimondi/delimitMate: close open parentheses,...
-* https://github.com/tpope/vim-fugitive
-* https://github.com/airblade/vim-gitgutter
 * https://github.com/editorconfig/editorconfig-vim
 * https://github.com/AndrewRadev/switch.vim
-* https://github.com/christoomey/vim-tmux-navigator: seamlessly navigate
 * https://github.com/vim-airline/vim-airline
-* https://github.com/vim-syntastic/syntastic
 * https://github.com/Chiel92/vim-autoformat
 * https://github.com/ryanoasis/vim-devicons
 * https://github.com/junegunn/fzf.vim
@@ -78,6 +84,7 @@ This is a work in progress. Please be patient.
 * vim-better-whitespace
 * vim-go
 * vim-sensible
+* syntastic-extras
 * https://github.com/wincent/terminus
 * https://github.com/honza/vim-snippets
 * https://github.com/Shougo/deoplete.nvim
