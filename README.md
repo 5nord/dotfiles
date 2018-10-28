@@ -38,10 +38,14 @@ This is a work in progress. Please be patient.
         Ctrl+N      Next quickfix
         Ctrl+M      Prev quickfix
 
-**vim-surround**
+**vim-surround -- quoting made simple**
 
         cs"'        Replace quotes with single quotes
 
+
+**goyo -- Distraction-free writing in Vi**
+
+        ,z          Toggle ZEN mode
 
 # TODO
 
@@ -53,7 +57,6 @@ This is a work in progress. Please be patient.
 ## Plugins
 
 * https://github.com/Yggdroot/indentLine: show columns
-* https://github.com/tpope/vim-surround: replace pairs
 * https://github.com/tomtom/tcomment_vim: toggle comments
 * https://github.com/junegunn/goyo.vim: zenmode
 * https://github.com/suan/vim-instant-markdown
