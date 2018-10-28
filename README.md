@@ -40,7 +40,7 @@ This is a work in progress. Please be patient.
 
 # TODO
 
-## Features Hotlkeys
+## Features Hotkeys
 
 * Trailing space character should be colored
 * Hotkey for moving lines and blocks not working
