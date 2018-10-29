@@ -11,5 +11,6 @@ function! s:build_go_files()
 endfunction
 
 autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
-autocmd FileType go   set tabstop=4 softtabstop=0 noexpandtab shiftwidth=4 smarttab
+autocmd FileType go set tabstop=4 softtabstop=0 noexpandtab shiftwidth=4 smarttab
+autocmd FileType go set nolist
 
