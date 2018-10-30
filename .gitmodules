@@ -25,3 +25,6 @@
 [submodule ".vim/bundle/vim-go"]
 	path = .vim/bundle/vim-go
 	url = https://github.com/fatih/vim-go
+[submodule ".vim/bundle/vim-ttcn3"]
+	path = .vim/bundle/vim-ttcn3
+	url = http://github.com/5nord/vim-ttcn3.git
