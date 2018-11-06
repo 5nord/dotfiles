@@ -10,6 +10,8 @@ function! s:build_go_files()
   endif
 endfunction
 
+let g:go_fmt_command = "goimports"
+
 autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
 autocmd FileType go set tabstop=4 softtabstop=0 noexpandtab shiftwidth=4 smarttab
 autocmd FileType go set nolist
