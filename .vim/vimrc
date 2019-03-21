@@ -8,8 +8,6 @@ set history=500
 set autoread
 set relativenumber
 set number
-set cursorline
-set mouse=a
 set scrolloff=7
 set wildmenu
 set wildignore=*.o,*~,*.pyc,*/.svn/*,*/.DS_Store

@@ -70,7 +70,7 @@ This is a work in progress. Please be patient.
 * https://github.com/Yggdroot/indentLine: show columns
 * https://github.com/tomtom/tcomment_vim: toggle comments
 * https://github.com/suan/vim-instant-markdown
-* https://github.com/Raimondi/delimitMate: close open parentheses,...
+* --https://github.com/Raimondi/delimitMate: close open parentheses,...--
 * https://github.com/editorconfig/editorconfig-vim
 * https://github.com/AndrewRadev/switch.vim
 * https://github.com/vim-airline/vim-airline
