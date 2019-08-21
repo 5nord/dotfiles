@@ -28,7 +28,8 @@ set tm=500
 set encoding=utf8
 set ffs=unix,dos,mac
 set tabstop=4 softtabstop=0 expandtab shiftwidth=4 smarttab
-set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+set listchars=tab:\»\ ,trail:\ ,extends:>,precedes:<,nbsp:+
+set fillchars+=vert:\│
 set list
 set linebreak
 set breakindent
@@ -39,13 +40,20 @@ set smartindent
 set wrap
 set laststatus=2
 set statusline=\ %F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
-
+let c_space_errors = 1
 " Return to last edit position when opening files (You want this!)
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 if $COLORTERM == 'gnome-terminal'
     set t_Co=256
 endif
+
+
+let g:go_auto_type_info = 1
+
+colorscheme gruvbox-material-hard
+set cursorline
+
 
 try
     set undodir=~/.vim/temp_dirs/undodir

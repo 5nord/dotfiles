@@ -22,6 +22,7 @@
 --ignore-directory=is:bin
 --ignore-directory=is:gnb
 --ignore-directory=is:sdk5g
+--ignore-directory=is:copy
 
 # default settings
 --no-ttcn3

@@ -18,3 +18,4 @@ autocmd FileType go nmap <Leader>i <Plug>(go-info)
 autocmd FileType go set tabstop=4 softtabstop=0 noexpandtab shiftwidth=4 smarttab
 autocmd FileType go set nolist
 
+setlocal omnifunc=go#complete#Complete

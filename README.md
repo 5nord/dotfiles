@@ -1,9 +1,10 @@
 # dotfiles
 
-This is a work in progress. Please be patient.
+This is a work in progress. Please be patient. 
 
 # VIM
 
+Nice would be automatic highlight similar to brackets
 **Hotkeys**
 
         <tab>       Jump to matching character
