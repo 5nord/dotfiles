@@ -8,7 +8,7 @@ fi
 # User specific environment
 if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
 then
-    PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+	PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 fi
 export PATH
 
@@ -17,3 +17,76 @@ export PATH
 
 # User specific aliases and functions
 export GOPATH=$HOME/.local
+
+function _git_action()
+{
+	local gitdir="$(git rev-parse --git-dir 2>/dev/null)"
+	if [ -z "$gitdir" ]; then
+		return
+	elif [ -f "$gitdir/rebase-merge/interactive" ]; then
+		echo "rebase -i"
+	elif [ -d "$gitdir/rebase-merge" ]; then
+		echo "rebase -m"
+	elif [ -f "$gitdir/rebase-apply/rebasing" ]; then
+		echo "rebase"
+	elif [ -f "$gitdir/rebase-apply/applying" ]; then
+		echo "am"
+	elif [ -d "$gitdir/rebase-apply" ]; then
+		echo "am/rebase"
+	elif [ -f "$gitdir/MERGE_HEAD" ]; then
+		echo "merge"
+	elif [ -f "$gitdir/CHERRY_PICK_HEAD" ]; then
+		echo "cherry-pick"
+	elif [ -f "$gitdir/BISECT_LOG" ]; then
+		echo "bisect"
+	fi
+}
+
+function my_fancy_prompt()
+{
+	local RET=$?
+
+	# colors
+	local COL_GIT='\[\033[35m\]'
+	local COL_PASS='\[\033[32m\]'
+	local COL_FAIL='\[\033[31m\]'
+	local COL_PS1='\[\033[33m\]'
+	local COL_INV='\[\033[7m\]'
+	local COL_OFF='\[\033[0m\]'
+
+	# git prompt
+	local GIT_PROMPT=
+	local GIT_STASH=$(git rev-parse refs/stash &>/dev/null && echo "!")
+	local GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+
+	if [ "$GIT_BRANCH" == "HEAD" ]; then
+		GIT_BRANCH=$(git rev-parse --short HEAD 2>/dev/null)
+	fi
+
+	local GIT_ACTION="$(_git_action)"
+	if [ -n "$GIT_ACTION" ]; then
+		GIT_ACTION="$COL_INV[$GIT_ACTION]$COL_OFF"
+	fi
+
+	if [ -n "$GIT_BRANCH" ]; then
+		case "$GIT_BRANCH","$GIT_STASH" in
+			master,)  GIT_PROMPT= ;;
+			*)        GIT_PROMPT="$COL_GIT[$GIT_BRANCH$GIT_STASH]$GIT_ACTION $COL_OFF";;
+		esac
+	fi
+
+	# exitcode prompt
+	if [ $RET -eq 0 ]; then
+		RET_PROMPT="$COL_PASS:)$COL_OFF "
+	else
+		RET_PROMPT="$COL_FAIL:($COL_OFF "
+	fi
+
+	# set prompt
+	PS1="${RET_PROMPT}${GIT_PROMPT}${COL_PS1}\u@\h:\w>${COL_OFF} "
+}
+PROMPT_COMMAND='my_fancy_prompt'
+
+export EDITOR=vim
+export SSH_ASKPASS=
+alias vi=vim
