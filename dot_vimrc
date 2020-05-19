@@ -1,0 +1,41 @@
+set nocompatible
+
+call plug#begin('~/.vim/plugged')
+Plug 'prabirshrestha/async.vim' " Required for vim-lsp
+Plug 'prabirshrestha/vim-lsp'   " Generic Language Protocol implementation
+Plug 'mattn/vim-lsp-settings'   " Helper for common language servers
+Plug 'morhetz/gruvbox'          " Retro Colorscheme
+Plug 'godlygeek/tabular'        " For aligning things
+call plug#end()
+
+" Enable filetype plugins (keeps .vimrc cleaner)
+filetype plugin on
+
+" Clean search highlight by pressing esc twice.
+nnoremap <esc><esc> :noh<return>
+
+" UI Stuff
+" -----------------------------------------------------------------------------
+"
+
+set fillchars=vert:\│
+
+" Highlight trailing spaces for any file type
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+
+" This group restores color settings after a colorscheme change.
+augroup vimrc
+   autocmd!
+   autocmd ColorScheme * highlight MatchParen      cterm=bold ctermfg=cyan ctermbg=magenta
+   autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+augroup END
+
+let g:gruvbox_italic = 1
+let g:gruvbox_contrast_light = 'hard'
+colorscheme gruvbox
+syntax on
