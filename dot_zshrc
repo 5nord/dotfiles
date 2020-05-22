@@ -1,0 +1,19 @@
+# Lines configured by zsh-newuser-install
+HISTFILE=~/.histfile
+HISTSIZE=1000
+SAVEHIST=1000
+bindkey -v
+# End of lines configured by zsh-newuser-install
+# The following lines were added by compinstall
+zstyle :compinstall filename '/home/mef/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
+#
+
+# Install zplug: curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
+source ~/.zplug/init.zsh
+zplug "supercrabtree/k"
+
+zplug load
