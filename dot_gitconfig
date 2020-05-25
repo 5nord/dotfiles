@@ -1,0 +1,22 @@
+[user]
+	email = matthias.simon@nokia.com
+	name = Matthias Simon
+
+[url "https://github.com/"]
+	insteadOf = gh:
+
+[url "https://gitlabe1.ext.net.nokia.com/"]
+	insteadOf = gl:
+
+[pull]
+	rebase = true
+
+[alias]
+	this           = !git init && git add -A && git commit -m \"Initial commit.\"
+	undo           = reset --soft HEAD^
+	amend          = commit --amend --no-edit
+	changes        = "!git log --oneline --first-parent $(git describe --tags --abbrev=0)..HEAD"
+	prune-branches = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+
+[apply]
+	whitespace = fix
