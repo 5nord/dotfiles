@@ -22,14 +22,15 @@ call plug#end()
 
 filetype plugin on " Enable filetype plugins (keeps .vimrc cleaner)
 
-nnoremap <esc><esc> :noh<return> " Clean search highlight by pressing esc twice.
+" Clean search highlight by pressing esc twice.
+nnoremap <c-l><c-l> :noh<return>
 
 " Vim updates after 100ms instead of 4s. Plugins like gitgutter feel more
 " responsive.
 set updatetime=100
 
 " Git stuff
-nnoremap <leader>gs :Magit<CR>       " git status
+nnoremap <leader>gs :Magit<CR>
 
 " UI Stuff
 " -----------------------------------------------------------------------------
