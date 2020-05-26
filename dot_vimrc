@@ -6,6 +6,10 @@ if empty(glob('~/.vim/autoload/plug.vim'))
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
+if has('termguicolors')
+  set termguicolors
+endif
+
 call plug#begin('~/.vim/plugged')
 
 " Language Server Protocol Support
