@@ -81,3 +81,13 @@ fi
 
 PROMPT="${mef_prompt_status}${mef_prompt_color}${mef_prompt_host}%~ %(!.#.>)%f%b%s "
 RPROMPT="%F{240}\$vcs_info_msg_0_ %*%f"
+
+
+if ! [[ "$PATH" =~ "$HOME/.local/bin:$HOME/bin:" ]]
+then
+	PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+fi
+export PATH
+
+# User specific aliases and functions
+export GOPATH=$HOME/.local
