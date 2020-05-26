@@ -54,7 +54,8 @@ set fillchars=vert:\│
 set cursorline
 set number
 set relativenumber
-
+set splitbelow
+set splitright
 
 " Highlight trailing spaces for any file type
 highlight ExtraWhitespace ctermbg=red guibg=red

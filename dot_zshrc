@@ -30,6 +30,7 @@ bindkey '\e.' insert-last-word
 bindkey '^R' history-incremental-search-backward
 bindkey '^w' backward-kill-word
 
+. $HOME/.local/bin/z.sh
 
 # Install zplug: curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 source ~/.zplug/init.zsh
