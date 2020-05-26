@@ -18,6 +18,10 @@ Plug 'airblade/vim-gitgutter'   " Jumping between hunks
 Plug 'jreybert/vimagit'         " Editing commits
 Plug 'tpope/vim-fugitive'       " For git blame
 Plug 'tpope/vim-rhubarb'        " Opening git lines
+
+" Go support
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+
 call plug#end()
 
 filetype plugin on " Enable filetype plugins (keeps .vimrc cleaner)
@@ -37,6 +41,10 @@ nnoremap <leader>gs :Magit<CR>
 "
 
 set fillchars=vert:\│
+set cursorline
+set number
+set relativenumber
+
 
 " Highlight trailing spaces for any file type
 highlight ExtraWhitespace ctermbg=red guibg=red
