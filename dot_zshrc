@@ -1,19 +1,83 @@
-# Lines configured by zsh-newuser-install
-HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
-bindkey -v
-# End of lines configured by zsh-newuser-install
-# The following lines were added by compinstall
-zstyle :compinstall filename '/home/mef/.zshrc'
+# Save  each command's beginning timestamp (in seconds since the epoch) and the
+# duration (in seconds) to the history file.
+setopt EXTENDED_HISTORY
 
-autoload -Uz compinit
-compinit
-# End of lines added by compinstall
-#
+# If  the internal history needs to be trimmed to add the current command line,
+# setting this option will cause the oldest history event that has a duplicate
+# to be lost before losing a unique event  from  the list.   You  should  be
+# sure to set the value of HISTSIZE to a larger number than SAVEHIST in order
+# to give you  some  room  for  the  duplicated  events
+setopt HIST_EXPIRE_DUPS_FIRST
+HISTFILE=~/.zsh_history
+HISTSIZE=3000
+SAVEHIST=2000
+
+setopt SHARE_HISTORY      # share history across multiple zsh sessions
+setopt APPEND_HISTORY     # append to history
+setopt INC_APPEND_HISTORY # adds commands as they are typed, not at shell exit
+
+# Remove superfluous blanks from each command line being added to the history list.
+setopt HIST_REDUCE_BLANKS
+
+# Correct typos
+setopt CORRECT
+setopt CORRECT_ALL
+
+# Enable vi mode
+bindkey -v
+
 
 # Install zplug: curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
 source ~/.zplug/init.zsh
 zplug "supercrabtree/k"
 
 zplug load
+
+# Configure completion
+zstyle ':completion:*' completer _complete _ignored _approximate
+zstyle ':completion:*' expand suffix
+zstyle ':completion:*' file-sort modification
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+zstyle ':completion:*' original true
+zstyle ':completion:*' preserve-prefix '//[^/]##/'
+zstyle ':completion:*' squeeze-slashes true
+zstyle ':completion:*' use-compctl true
+zstyle ':completion:*' verbose false
+zstyle :compinstall filename '/home/mef/.zshrc'
+autoload -Uz compinit && compinit
+autoload bashcompinit && bashcompinit
+
+function preexec() {
+  timer=$(($(date +%s%0N)/1000000))
+}
+
+function precmd() {
+  if [ $timer ]; then
+    now=$(($(date +%s%0N)/1000000))
+    elapsed=$(($now-$timer))
+    RPROMPT="%F{240}${elapsed}ms %{$reset_color%}"
+    unset timer
+  fi
+}
+
+autoload -Uz vcs_info
+precmd_vcs_info() { vcs_info }
+precmd_functions+=( precmd_vcs_info )
+setopt PROMPT_SUBST
+#RPROMPT=\$vcs_info_msg_0_
+
+zstyle ':vcs_info:git:*' formats '%b'
+
+mef_prompt_color="%F{yellow}"
+mef_prompt_pass="%B%F{green}:)%f%b"
+mef_prompt_fail="%B%F{red}:( %?%f%b"
+mef_prompt_status="%(2L.%F{240}L%L .)%(?.$mef_prompt_pass.$mef_prompt_fail)%b "
+
+if [[ -n "$SSH_CLIENT" ]]; then
+	mef_prompt_host="%n@%m:"
+	mef_prompt_color="%F{magenta}"
+fi
+
+PROMPT="${mef_prompt_status}${mef_prompt_color}${mef_prompt_host}%~ %(!.#.>)%f%b%s "
+RPROMPT="%F{240}\$vcs_info_msg_0_ %*%f"
