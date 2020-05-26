@@ -23,8 +23,12 @@ setopt HIST_REDUCE_BLANKS
 setopt CORRECT
 setopt CORRECT_ALL
 
+export KEYTIMEOUT=1
 # Enable vi mode
 bindkey -v
+bindkey '\e.' insert-last-word
+bindkey '^R' history-incremental-search-backward
+bindkey '^w' backward-kill-word
 
 
 # Install zplug: curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
@@ -48,23 +52,60 @@ zstyle :compinstall filename '/home/mef/.zshrc'
 autoload -Uz compinit && compinit
 autoload bashcompinit && bashcompinit
 
+setopt PROMPT_SUBST
+
 function preexec() {
-  timer=$(($(date +%s%0N)/1000000))
+	timer="$(date +%s%0N)"
 }
 
 function precmd() {
-  if [ $timer ]; then
-    now=$(($(date +%s%0N)/1000000))
-    elapsed=$(($now-$timer))
-    RPROMPT="%F{240}${elapsed}ms %{$reset_color%}"
-    unset timer
-  fi
+	if [ $timer ]; then
+		now="$(date +%s%0N)"
+		elapsed=$(($now-$timer))
+		unset timer
+		mef_prompt_duration=
+
+		local Nanosecond Microsecond Millisecond Second Minute Hour
+
+		((Nanosecond  = 1))
+		((Microsecond = 1000 * Nanosecond))
+		((Millisecond = 1000 * Microsecond))
+		((Second      = 1000 * Millisecond))
+		((Minute      = 60   * Second))
+		((Hour        = 60   * Minute))
+
+		local ns="$elapsed"
+		if [ $ns -eq 0 ]; then
+			echo 0s
+		elif [ $ns -lt $Microsecond ]; then
+			mef_prompt_duration="${ns}ns"
+		elif [ $ns -lt $Millisecond ]; then
+			mef_prompt_duration="$(printf "%.2fµs" "$((1000000000 *   $ns/$Microsecond  ))e-9")"
+		elif [ $ns -lt $Second ]; then
+			mef_prompt_duration="$(printf "%.2fms" "$((1000000000 *   $ns/$Millisecond  ))e-9")"
+		else
+			local hours
+			((hours = ns / Hour))
+			if [ $hours -gt 0 ]; then
+				mef_prompt_duration="${hours}h "
+				(( ns = ns - hours*Hour ))
+			fi
+			local mins
+			((mins = ns / Minute))
+			if [ $mins -gt 0 ]; then
+				mef_prompt_duration="$mef_prompt_duration${mins}m "
+				(( ns = ns - min*Minute ))
+			fi
+			mef_prompt_duration="$mef_prompt_duration$(printf "%.2fs" "$((1000000000 * $ns/$Second))e-9")"
+
+		fi
+		RPROMPT='%F{240}$mef_prompt_duration %{$reset_color%}'
+	fi
 }
 
 autoload -Uz vcs_info
 precmd_vcs_info() { vcs_info }
 precmd_functions+=( precmd_vcs_info )
-setopt PROMPT_SUBST
 #RPROMPT=\$vcs_info_msg_0_
 
 zstyle ':vcs_info:git:*' formats '%b'
