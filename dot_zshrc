@@ -19,10 +19,6 @@ setopt INC_APPEND_HISTORY # adds commands as they are typed, not at shell exit
 # Remove superfluous blanks from each command line being added to the history list.
 setopt HIST_REDUCE_BLANKS
 
-# Correct typos
-setopt CORRECT
-setopt CORRECT_ALL
-
 export KEYTIMEOUT=1
 # Enable vi mode
 bindkey -v
@@ -89,13 +85,13 @@ function precmd() {
 			((hours = ns / Hour))
 			if [ $hours -gt 0 ]; then
 				mef_prompt_duration="${hours}h "
-				(( ns = ns - hours*Hour ))
+				(( ns = ns % Hour ))
 			fi
 			local mins
 			((mins = ns / Minute))
 			if [ $mins -gt 0 ]; then
 				mef_prompt_duration="$mef_prompt_duration${mins}m "
-				(( ns = ns - min*Minute ))
+				(( ns = ns % Minute ))
 			fi
 			mef_prompt_duration="$mef_prompt_duration$(printf "%.2fs" "$((1000000000 * $ns/$Second))e-9")"
 
@@ -121,7 +117,7 @@ if [[ -n "$SSH_CLIENT" ]]; then
 	mef_prompt_color="%F{magenta}"
 fi
 
-PROMPT="${mef_prompt_status}${mef_prompt_color}${mef_prompt_host}%~ %(!.#.>)%f%b%s "
+PROMPT="${mef_prompt_status}${mef_prompt_color}${mef_prompt_host}%~%(!.#.>)%f%b%s "
 RPROMPT="%F{240}\$vcs_info_msg_0_ %*%f"
 
 
