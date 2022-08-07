@@ -1,16 +1,19 @@
 set nocompatible
+"set background=light
+let mapleader = ","
 
+
+" Autoinstall plug
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-if has('termguicolors')
-  set termguicolors
-endif
-
 call plug#begin('~/.vim/plugged')
+
+Plug 'AndrewRadev/linediff.vim'
+Plug 'tpope/vim-surround'
 
 " Language Server Protocol Support
 Plug 'prabirshrestha/async.vim' " Required for vim-lsp
@@ -22,19 +25,46 @@ Plug 'morhetz/gruvbox'          " Retro Colorscheme
 
 " Utils
 Plug 'godlygeek/tabular'        " For aligning things
+Plug 'gko/vim-coloresque'
 
 " Git stuff
 Plug 'airblade/vim-gitgutter'   " Jumping between hunks
-Plug 'jreybert/vimagit'         " Editing commits
-Plug 'tpope/vim-fugitive'       " For git blame
-Plug 'tpope/vim-rhubarb'        " Opening git lines
+"Plug 'jreybert/vimagit'         " Editing commits
+"Plug 'tpope/vim-fugitive'       " For git blame
+"Plug 'tpope/vim-rhubarb'        " Opening git lines
 
 " Go support
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
+" TTCN-3 support
+Plug 'gustafj/vim-ttcn'
+
+"Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+"Plug 'junegunn/fzf.vim'
+
+" For Notetaking
+"Plug 'pbrisbin/vim-mkdir'
+"Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+"Plug 'jkramer/vim-checkbox'
+
+"Displays every variable in a different color
+Plug 'jaxbot/semantic-highlight.vim'
+
+" Emmet
+Plug 'mattn/emmet-vim'
+
 call plug#end()
 
+let g:semanticTermColors = [28,1,2,3,4,5,6,7,25,9,10,34,12,13,14,15,16,125,124,19]
+" For wrapping comments
+set formatoptions-=t
+
 filetype plugin on " Enable filetype plugins (keeps .vimrc cleaner)
+
+" Emmet configuration
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+let g:user_emmet_leader_key='<C-A>'
 
 " Clean search highlight by pressing esc twice.
 nnoremap <c-l><c-l> :noh<return>
@@ -43,12 +73,32 @@ nnoremap <c-l><c-l> :noh<return>
 " responsive.
 set updatetime=100
 
+" Use PRIMARY clipboard (select) for copy&pasting
+set clipboard^=unnamed,unnamedplus
+
 " Git stuff
 nnoremap <leader>gs :Magit<CR>
+
+" Note taking
+nnoremap <leader>ww :Ex ~/Documents/notes<CR>
+
+" Edit vimr configuration file
+nnoremap <Leader>ve :e $MYVIMRC<CR>
+
+" Reload vimr configuration file
+nnoremap <Leader>vr :source $MYVIMRC<CR>
 
 " UI Stuff
 " -----------------------------------------------------------------------------
 "
+
+function! ToggleLineNumber()
+  if v:version > 703
+    set norelativenumber!
+  endif
+  set nonumber!
+endfunction
+map <leader>r :call ToggleLineNumber()<CR>
 
 set fillchars=vert:\│
 set cursorline
@@ -56,9 +106,10 @@ set number
 set relativenumber
 set splitbelow
 set splitright
-
+"
 " Highlight trailing spaces for any file type
 highlight ExtraWhitespace ctermbg=red guibg=red
+match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 match ExtraWhitespace /\s\+$/
 autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
@@ -70,6 +121,7 @@ augroup vimrc
    autocmd!
    autocmd ColorScheme * highlight MatchParen      cterm=bold ctermfg=cyan ctermbg=magenta
    autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
+   autocmd ColorScheme * highlight SpellBad        cterm=underline ctermfg=red
 augroup END
 
 let g:gruvbox_italic = 1
@@ -77,3 +129,71 @@ let g:gruvbox_contrast_light = 'hard'
 colorscheme gruvbox
 syntax on
 
+let g:lsp_diagnostics_echo_cursor = 1
+let g:go_fmt_command = "goimports"
+
+"set spell
+set spellfile=$HOME/.vim/spell/en.utf-8.add
+
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gs <plug>(lsp-document-symbol-search)
+    nmap <buffer> gS <plug>(lsp-workspace-symbol-search)
+    nmap <buffer> gr <plug>(lsp-references)
+    nmap <buffer> gi <plug>(lsp-implementation)
+    nmap <buffer> gt <plug>(lsp-type-definition)
+    nmap <buffer> <leader>rn <plug>(lsp-rename)
+    nmap <buffer> [g <plug>(lsp-previous-diagnostic)
+    nmap <buffer> ]g <plug>(lsp-next-diagnostic)
+    nmap <buffer> K <plug>(lsp-hover)
+    inoremap <buffer> <expr><c-f> lsp#scroll(+4)
+    inoremap <buffer> <expr><c-d> lsp#scroll(-4)
+
+    let g:lsp_format_sync_timeout = 1000
+    autocmd! BufWritePre *.rs,*.go call execute('LspDocumentFormatSync')
+
+    " refer to doc to add more commands
+endfunction
+
+augroup lsp_install
+    au!
+    " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+
+set visualbell
+
+set wildchar=<Tab> wildmenu wildmode=full
+set wildcharm=<C-Z>
+nnoremap <leader>B :b <C-Z>
+nnoremap <leader>b :buffers<CR>:buffer<Space>
+
+"let g:lsp_log_verbose = 1
+"let g:lsp_log_file = expand('~/vim-lsp.log')
+
+
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#test#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
+autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+autocmd FileType go nmap <leader>t  <Plug>(go-test)
+autocmd FileType go nmap <leader>c  <Plug>(go-coverage-toggle)
+autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+
+" Jump between hunks
+nmap <Leader>gn <Plug>(GitGutterNextHunk)  " git next
+nmap <Leader>gp <Plug>(GitGutterPrevHunk)  " git previous
+
+" Hunk-add and hunk-revert for chunk staging
+nmap <Leader>ga <Plug>(GitGutterStageHunk)  " git add (chunk)
+nmap <Leader>gu <Plug>(GitGutterUndoHunk)   " git undo (chunk)
