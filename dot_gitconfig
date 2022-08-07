@@ -1,22 +1,20 @@
 [user]
-	email = matthias.simon@nokia.com
+	#email = matthias.simon@nokia.com
+	email = mef@5nord.de
 	name = Matthias Simon
-
-[url "https://github.com/"]
-	insteadOf = gh:
-
-[url "https://gitlabe1.ext.net.nokia.com/"]
-	insteadOf = gl:
-
-[pull]
-	rebase = true
-
 [alias]
-	this           = !git init && git add -A && git commit -m \"Initial commit.\"
-	undo           = reset --soft HEAD^
+	wip            = push origin HEAD:refs/for/master%wip
 	amend          = commit --amend --no-edit
 	changes        = "!git log --oneline --first-parent $(git describe --tags --abbrev=0)..HEAD"
 	prune-branches = "!git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
+	sync           = "!git fetch upstream && git checkout master && git reset --hard upstream/master"
+	whats          = "!git diff --minimal $(git merge-base master $1) "
+    recentb = "!r() { refbranch=$1 count=$2; git for-each-ref --sort=-committerdate refs/heads --format='%(refname:short)|%(HEAD)%(color:yellow)%(refname:short)|%(color:bold green)%(committerdate:relative)|%(color:blue)%(subject)|%(color:magenta)%(authorname)%(color:reset)' --color=always --count=${count:-20} | while read line; do branch=$(echo \"$line\" | awk 'BEGIN { FS = \"|\" }; { print $1 }' | tr -d '*'); ahead=$(git rev-list --count \"${refbranch:-origin/master}..${branch}\"); behind=$(git rev-list --count \"${branch}..${refbranch:-origin/master}\"); colorline=$(echo \"$line\" | sed 's/^[^|]*|//'); echo \"$ahead|$behind|$colorline\" | awk -F'|' -vOFS='|' '{$5=substr($5,1,70)}1' ; done | ( echo \"ahead|behind||branch|lastcommit|message|author\\n\" && cat) | column -ts'|';}; r"
 
 [apply]
 	whitespace = fix
+[core]
+	excludesfile = /home/mef/.gitignore
+
+[credential]
+	helper = cache
